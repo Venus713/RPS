@@ -1,5 +1,13 @@
 service: rws-mpc-api # NOTE: update this with your service name
 
+custom:
+  stage: ${opt:stage, self:provider.stage}
+  tableName: ${self:custom.stage}-notes
+  tableThroughputs:
+    prod: 5
+    default: 1
+  tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
+
 provider:
   name: aws
   runtime: python3.7
@@ -18,22 +26,11 @@ provider:
       Resource:
         - "Fn::GetAtt": [ NotesTable, Arn ]
 
-  environment:
-    variable1: value1
-
 functions:
-  hello:
-    handler: handler.hello
+  - ${file(src/notes/functions.yml)}
 
-# you can add CloudFormation resource templates here
-Resources:
+resources:
   - ${file(resources/api-gateway-errors.yml)}
   - ${file(resources/dynamodb-tables.yml)}
-
-custom:
-  stage: ${opt:stage, self:provider.stage}
-  tableName: ${self:custom.stage}-notes
-  tableThroughputs:
-    prod: 5
-    default: 1
-  tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
+  - ${file(resources/s3-bucket.yml)}
+  - ${file(resources/cognito-user-pool.yml)}

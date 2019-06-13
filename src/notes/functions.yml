@@ -1,0 +1,8 @@
+notes_test:
+  handler: src/notes/notes.test
+  events:
+    - http:
+        path: notes/test
+        method: get
+        cors: true
+        # authorizer: aws_iam
