@@ -30,6 +30,7 @@ provider:
         - dynamodb:DeleteItem
       Resource:
         - "Fn::GetAtt": [ NotesTable, Arn ]
+        - "Fn::GetAtt": [ CategoriesTable, Arn ]
 
 functions:
   - ${file(src/notes/functions.yml)}
