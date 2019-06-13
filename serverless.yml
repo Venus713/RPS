@@ -1,6 +1,7 @@
 service: rws-mpc-api # NOTE: update this with your service name
 
 custom:
+  projectName: 'MPC'
   stage: ${opt:stage, self:provider.stage}
   notesTableName: ${self:custom.stage}-notes
   categoriesTableName: ${self:custom.stage}-categories
@@ -16,6 +17,7 @@ provider:
   region: us-east-1
   environment:
     CATEGORY_TABLE_NAME: ${self:custom.categoriesTableName}
+    NOTE_TABLE_NAME: ${self:custom.notesTableName}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -38,3 +40,4 @@ resources:
   - ${file(resources/dynamodb-tables.yml)}
   - ${file(resources/s3-bucket.yml)}
   - ${file(resources/cognito-user-pool.yml)}
+  - ${file(resources/cognito-identity-pool.yml)}

@@ -1,24 +1,8 @@
-import json
+from libs.models.note import Note
+from libs.core.response import return_success, return_failure
 
 
-def test(event, context):
-    body = {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "input": event
-    }
+def index(event, context):
+    result = Note.list()
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(body)
-    }
-
-    return response
-
-    # Use this code if you don't use the http event with the LAMBDA-PROXY
-    # integration
-    """
-    return {
-        "message": "Go Serverless v1.0! Your function executed successfully!",
-        "event": event
-    }
-    """
+    return return_success(result['Items'])

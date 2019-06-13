@@ -1,16 +1,8 @@
-import os
-import json
-import boto3
-dynamodb = boto3.resource('dynamodb')
+from libs.models.category import Category
+from libs.core.response import return_success, return_failure
 
 
 def list(event, context):
-    table = dynamodb.Table(os.environ['CATEGORY_TABLE_NAME'])
-    result = table.scan()
+    result = Category.list()
 
-    response = {
-        "statusCode": 200,
-        "body": json.dumps(result['Items'])
-    }
-
-    return response
+    return return_success(result['Items'])
