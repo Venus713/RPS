@@ -6,3 +6,39 @@ notes_list:
         method: get
         cors: true
         authorizer: aws_iam
+
+notes_create:
+  handler: src/notes/notes.create
+  events:
+    - http:
+        path: notes
+        method: post
+        cors: true
+        authorizer: aws_iam
+
+notes_get:
+  handler: src/notes/notes.get
+  events:
+    - http:
+        path: notes/{id}
+        method: get
+        cors: true
+        authorizer: aws_iam
+
+notes_update:
+  handler: src/notes/notes.update
+  events:
+    - http:
+        path: notes/{id}
+        method: put
+        cors: true
+        authorizer: aws_iam
+
+notes_delete:
+  handler: src/notes/notes.delete
+  events:
+    - http:
+        path: notes/{id}
+        method: delete
+        cors: true
+        authorizer: aws_iam
