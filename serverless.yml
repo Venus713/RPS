@@ -2,7 +2,8 @@ service: rws-mpc-api # NOTE: update this with your service name
 
 custom:
   stage: ${opt:stage, self:provider.stage}
-  tableName: ${self:custom.stage}-notes
+  notesTableName: ${self:custom.stage}-notes
+  categoriesTableName: ${self:custom.stage}-categories
   tableThroughputs:
     prod: 5
     default: 1
@@ -13,6 +14,8 @@ provider:
   runtime: python3.7
   stage: 'dev'
   region: us-east-1
+  environment:
+    CATEGORY_TABLE_NAME: ${self:custom.categoriesTableName}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -28,6 +31,7 @@ provider:
 
 functions:
   - ${file(src/notes/functions.yml)}
+  - ${file(src/categories/functions.yml)}
 
 resources:
   - ${file(resources/api-gateway-errors.yml)}

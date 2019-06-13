@@ -1,0 +1,8 @@
+categories_list:
+  handler: src/categories/categories.list
+  events:
+    - http:
+        path: categories
+        method: get
+        cors: true
+        authorizer: aws_iam

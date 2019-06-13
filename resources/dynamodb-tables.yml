@@ -2,7 +2,7 @@ Resources:
   NotesTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${self:custom.tableName}
+      TableName: ${self:custom.notesTableName}
       AttributeDefinitions:
         - AttributeName: userId
           AttributeType: S
@@ -14,6 +14,19 @@ Resources:
         - AttributeName: noteId
           KeyType: RANGE
       # Set the capacity based on the stage
+      ProvisionedThroughput:
+        ReadCapacityUnits: ${self:custom.tableThroughput}
+        WriteCapacityUnits: ${self:custom.tableThroughput}
+  CategoriesTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.categoriesTableName}
+      AttributeDefinitions:
+        - AttributeName: categoryId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: categoryId
+          KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: ${self:custom.tableThroughput}
         WriteCapacityUnits: ${self:custom.tableThroughput}
