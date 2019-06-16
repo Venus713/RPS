@@ -1,4 +1,4 @@
-import json
+import simplejson as json
 
 
 def build_response(status_code, body):

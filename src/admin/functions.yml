@@ -1,0 +1,23 @@
+admin_es_reset:
+  handler: src/admin/admin.reset
+  events:
+    - http:
+        path: admin/es/reset
+        method: get
+        cors: true
+        authorizer: aws_iam
+admin_set_config:
+  handler: src/admin/admin.set_config
+  events:
+    - http:
+        path: admin/setconfig
+        method: get
+        cors: true
+        authorizer: aws_iam
+products_import:
+  handler: src/admin/products.import_product
+  events:
+    - http:
+        path: admin/products/import
+        method: post
+        cors: true

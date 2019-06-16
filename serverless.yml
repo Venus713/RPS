@@ -1,23 +1,26 @@
-service: rws-mpc-api # NOTE: update this with your service name
+service: mpc-fe-api # NOTE: update this with your service name
 
 custom:
-  projectName: 'MPC'
+  projectName: 'MPC_API'
   stage: ${opt:stage, self:provider.stage}
-  notesTableName: ${self:custom.stage}-notes
-  categoriesTableName: ${self:custom.stage}-categories
+  mpcTableName: ${self:custom.stage}-mpcmain
   tableThroughputs:
     prod: 5
     default: 1
   tableThroughput: ${self:custom.tableThroughputs.${self:custom.stage}, self:custom.tableThroughputs.default}
+  pythonRequirements:
+    dockerizePip: non-linux
 
 provider:
   name: aws
   runtime: python3.7
   stage: 'dev'
-  region: us-east-1
+  region: eu-west-1
   environment:
-    CATEGORY_TABLE_NAME: ${self:custom.categoriesTableName}
-    NOTE_TABLE_NAME: ${self:custom.notesTableName}
+    MPC_TABLE_NAME: ${self:custom.mpcTableName}
+    APP_REGION: ${self:provider.region}
+    ES_INDEX_NAME: 'mpc-products-v8'
+    ES_HOST_URL: 'search-mpc-sls-es-development-cl2-4ub2ooanjdpbxsib4fomhkjzha.eu-west-1.es.amazonaws.com'
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -29,12 +32,14 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - "Fn::GetAtt": [ NotesTable, Arn ]
-        - "Fn::GetAtt": [ CategoriesTable, Arn ]
+        - "Fn::GetAtt": [ MpcTable, Arn ]
+
+plugins:
+  - serverless-python-requirements
 
 functions:
-  - ${file(src/notes/functions.yml)}
-  - ${file(src/categories/functions.yml)}
+  - ${file(src/admin/functions.yml)}
+  - ${file(src/landing/functions.yml)}
 
 resources:
   - ${file(resources/api-gateway-errors.yml)}
@@ -42,3 +47,4 @@ resources:
   - ${file(resources/s3-bucket.yml)}
   - ${file(resources/cognito-user-pool.yml)}
   - ${file(resources/cognito-identity-pool.yml)}
+

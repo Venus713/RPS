@@ -1,32 +1,19 @@
 Resources:
-  NotesTable:
+  MpcTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: ${self:custom.notesTableName}
+      TableName: ${self:custom.mpcTableName}
       AttributeDefinitions:
-        - AttributeName: userId
+        - AttributeName: pk
           AttributeType: S
-        - AttributeName: noteId
+        - AttributeName: sk
           AttributeType: S
       KeySchema:
-        - AttributeName: userId
+        - AttributeName: pk
           KeyType: HASH
-        - AttributeName: noteId
+        - AttributeName: sk
           KeyType: RANGE
       # Set the capacity based on the stage
-      ProvisionedThroughput:
-        ReadCapacityUnits: ${self:custom.tableThroughput}
-        WriteCapacityUnits: ${self:custom.tableThroughput}
-  CategoriesTable:
-    Type: AWS::DynamoDB::Table
-    Properties:
-      TableName: ${self:custom.categoriesTableName}
-      AttributeDefinitions:
-        - AttributeName: categoryId
-          AttributeType: S
-      KeySchema:
-        - AttributeName: categoryId
-          KeyType: HASH
       ProvisionedThroughput:
         ReadCapacityUnits: ${self:custom.tableThroughput}
         WriteCapacityUnits: ${self:custom.tableThroughput}

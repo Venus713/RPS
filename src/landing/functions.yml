@@ -1,0 +1,16 @@
+customer_affinity:
+  handler: src/landing/landing.customer_affinity
+  events:
+    - http:
+        path: customer/affinity
+        method: get
+        cors: true
+        authorizer: aws_iam
+shop_by_category:
+  handler: src/landing/landing.shop_by_category
+  events:
+    - http:
+        path: products/shop_by_category
+        method: get
+        cors: true
+        authorizer: aws_iam
