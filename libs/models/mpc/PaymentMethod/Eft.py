@@ -1,5 +1,5 @@
-from mpc.Payment import Payment
-from mpc.Quote import Quote
+from libs.models.mpc.Payment import Payment
+from libs.models.mpc.Quote import Quote
 import simplejson as json
 
 class Eft():

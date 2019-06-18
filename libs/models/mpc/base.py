@@ -3,6 +3,7 @@ import simplejson as json
 from . import DecimalEncoder
 import boto3
 from datetime import datetime
+import os
 
 
 class Base:
@@ -12,7 +13,10 @@ class Base:
         else:
             self.__db = dydb
 
-        self.__tbl = self.__db.Table('mpcmain')
+        if 'MPC_TABLE_NAME' in os.environ:
+            self.__tbl = self.__db.Table(os.environ['MPC_TABLE_NAME'])
+        else:
+            self.__tbl = self.__db.Table('mpcmain')
 
     def get_table(self):
         return self.__tbl

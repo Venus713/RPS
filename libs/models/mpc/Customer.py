@@ -87,6 +87,16 @@ class Customer(base.Base):
 
         return False
 
+    def update_affinity(self, new_affinity):
+        try:
+            response = self.get_table().put_item(Item=new_affinity)
+            if 'ResponseMetadata' in response:
+                if response['ResponseMetadata']['HTTPStatusCode'] == 200:
+                    return True
+        except:
+            return False
+
+
     @property
     def newsletters(self):
         return self.__newsletters
