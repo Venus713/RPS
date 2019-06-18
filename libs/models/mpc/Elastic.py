@@ -10,12 +10,22 @@ class Elastic():
 
     @property
     def search_url(self):
-        return 'https://' + self.__host + '/' + self.__index_name + '/_search'
+        if self.__awsauth:
+            return 'https://' + self.__host + '/' + self.__index_name + '/_search'
+        else:
+            return 'http://' + self.__host + '/' + self.__index_name + '/_search'
 
     @property
     def index_url(self):
-        return 'https://' + self.__host + '/' + self.__index_name + '/' + self.__doc_type
+        if self.__awsauth:
+            return 'https://' + self.__host + '/' + self.__index_name + '/' + self.__doc_type
+        else:
+            return 'http://' + self.__host + '/' + self.__index_name + '/' + self.__doc_type
 
     def post_search(self, query):
         headers = {"Content-Type": "application/json"}
-        return requests.post(self.search_url, json=query, headers=headers, auth=self.__awsauth)
+
+        if self.__awsauth:
+            return requests.post(self.search_url, json=query, headers=headers, auth=self.__awsauth)
+        else:
+            return requests.post(self.search_url, json=query, headers=headers)
