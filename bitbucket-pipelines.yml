@@ -1,0 +1,26 @@
+image: node:11.13.0-alpine
+
+pipelines:
+  branches:
+    dev:
+      - step:
+          name: 'Deploy to Staging'
+          deployment: 'Staging'
+          caches:
+            - node
+          script:
+            - apk add python3
+            - npm install -g serverless
+            - serverless config credentials --stage dev --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - serverless deploy --stage dev
+    master:
+      - step:
+          name: 'Deploy to Production'
+          deployment: 'Production'
+          caches:
+            - node
+          script:
+            - apk add python3
+            - npm install -g serverless
+            - serverless config credentials --stage prod --provider aws --key ${AWS_ACCESS_KEY_ID} --secret ${AWS_SECRET_ACCESS_KEY}
+            - serverless deploy --stage dev
